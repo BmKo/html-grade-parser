@@ -1,7 +1,7 @@
-using System.IO.Compression;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using HtmlGradeParser.Services;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,25 +17,11 @@ var headerPattern = new Regex(@"^(?<code>[A-Z]{4}\d{3})\s*-\s*(?<desc>.+?)\s*\((
 
 app.MapPost("/ProcessGrades", ([FromBody] string compressedDocument) =>
 {
-    var document = GZipToHtml(compressedDocument);
+    var document = GZipConverterService.GZipToHtml(compressedDocument);
     var json = ProcessHtml(document);
 
-    return Task.FromResult(json);
+    return json;
 });
-
-static HtmlDocument GZipToHtml(string compressedDocument)
-{
-    var compressedBytes = Convert.FromBase64String(compressedDocument);
-
-    using var compressedStream = new MemoryStream(compressedBytes);
-    using var gzipStream = new GZipStream(compressedStream, CompressionMode.Decompress);
-    using var streamReader = new StreamReader(gzipStream);
-
-    var htmlDoc = new HtmlDocument();
-    htmlDoc.LoadHtml(streamReader.ReadToEnd());
-
-    return htmlDoc;
-}
 
 JsonObject ProcessHtml(HtmlDocument document)
 {

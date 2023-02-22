@@ -5,10 +5,7 @@ using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var services = builder.Services;
-services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
 
 var app = builder.Build();
 var headerPattern = new Regex(@"^(?<code>[A-Z]{4}\d{3})\s*-\s*(?<desc>.+?)\s*\((?<year>\d{4})\s+T(?<tri>[1-3])\)$");
@@ -67,6 +64,9 @@ JsonObject ProcessCourse(HtmlNode node)
 
 if (app.Environment.IsDevelopment())
 {
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
+    
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();

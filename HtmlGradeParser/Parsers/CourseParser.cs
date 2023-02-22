@@ -1,10 +1,11 @@
 ﻿using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using HtmlGradeParser.Parsers.Interfaces;
 
 namespace HtmlGradeParser.Parsers;
 
-public static class CourseParser
+public abstract class CourseParser : IParser
 {
     private static readonly Regex HeaderPattern =
         new(@"^(?<code>[A-Z]{4}\d{3})\s*-\s*(?<desc>.+?)\s*\((?<year>\d{4})\s+T(?<tri>[1-3])\)$");

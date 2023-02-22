@@ -15,9 +15,7 @@ var app = builder.Build();
 app.MapPost("/ProcessGrades", ([FromBody] string compressedDocument) =>
 {
     var document = GZipConverterService.ToHtml(compressedDocument);
-    var json = GradesHtmlParser.Parse(document);
-
-    return json;
+    return GradesHtmlParser.Parse(document.DocumentNode);
 });
 
 if (app.Environment.IsDevelopment())

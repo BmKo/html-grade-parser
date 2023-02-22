@@ -1,13 +1,14 @@
 ﻿using System.Text.Json.Nodes;
 using HtmlAgilityPack;
+using HtmlGradeParser.Parsers.Interfaces;
 
 namespace HtmlGradeParser.Parsers;
 
-public static class GradesHtmlParser
+public abstract class GradesHtmlParser : IParser
 {
-    public static JsonObject Parse(HtmlDocument document)
+    public static JsonObject Parse(HtmlNode document)
     {
-        var courseDivs = document.DocumentNode.Descendants("div")
+        var courseDivs = document.Descendants("div")
             .Where(n => n.HasClass("tab-pane"));
 
         var courses = new JsonArray();

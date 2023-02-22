@@ -1,6 +1,13 @@
-﻿namespace HtmlGradeParser.Parsers;
+﻿using System.Text.Json.Nodes;
+using HtmlAgilityPack;
+using HtmlGradeParser.Parsers.Interfaces;
 
-public class AssessmentParser
+namespace HtmlGradeParser.Parsers;
+
+public abstract class AssessmentParser : IParser
 {
-    
+    public static JsonObject Parse(HtmlNode node)
+    {
+        throw new NotImplementedException();
+    }
 }

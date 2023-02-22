@@ -5,7 +5,7 @@ namespace HtmlGradeParser.Services;
 
 public static class GZipConverterService
 {
-    public static HtmlDocument GZipToHtml(string compressedDocument)
+    public static HtmlDocument ToHtml(string compressedDocument)
     {
         var compressedBytes = Convert.FromBase64String(compressedDocument);
 

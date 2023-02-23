@@ -5,5 +5,5 @@ namespace HtmlGradeParser.Parsers.Interfaces;
 
 public interface IParser
 {
-    public static abstract JsonObject Parse(HtmlNode node);
+    public static abstract JsonNode Parse(HtmlNode node);
 }

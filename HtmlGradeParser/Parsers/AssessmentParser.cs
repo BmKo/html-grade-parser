@@ -6,8 +6,20 @@ namespace HtmlGradeParser.Parsers;
 
 public abstract class AssessmentParser : IParser
 {
-    public static JsonObject Parse(HtmlNode node)
+    public static JsonNode Parse(HtmlNode node)
     {
-        throw new NotImplementedException();
+        var div = node.SelectSingleNode("div");
+        var header = div.SelectSingleNode("h4");
+
+        var name = header?.SelectSingleNode("text()")?.InnerText.Trim();
+        var finalMark = header?.SelectSingleNode("span/text()")?
+            .InnerText.Split(':').LastOrDefault()?.Trim();
+        
+        return new JsonObject
+        {
+            ["id"] = div.Id,
+            ["name"] = name ?? "",
+            ["final_mark"] = finalMark ?? ""
+        };
     }
 }

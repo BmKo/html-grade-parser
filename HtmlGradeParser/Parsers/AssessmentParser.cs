@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Nodes;
 using HtmlAgilityPack;
 using HtmlGradeParser.Parsers.Interfaces;
+using HtmlGradeParser.Services;
 
 namespace HtmlGradeParser.Parsers;
 
@@ -14,12 +15,25 @@ public abstract class AssessmentParser : IParser
         var name = header?.SelectSingleNode("text()")?.InnerText.Trim();
         var finalMark = header?.SelectSingleNode("span/text()")?
             .InnerText.Split(':').LastOrDefault()?.Trim();
-        
+
+        string? letterGrade = null;
+
+        if (float.TryParse(finalMark ?? "", out var numberGrade))
+        {
+            letterGrade = GradeConverterService.ConvertToLetter(numberGrade);
+        }
+        else if (finalMark != null)
+        {
+            letterGrade = finalMark;
+            numberGrade = GradeConverterService.ConvertToNumber(finalMark);
+        }
+
         return new JsonObject
         {
             ["id"] = div.Id,
             ["name"] = name ?? "",
-            ["final_mark"] = finalMark ?? ""
+            ["letter_grade"] = letterGrade,
+            ["number_grade"] = numberGrade
         };
     }
 }
